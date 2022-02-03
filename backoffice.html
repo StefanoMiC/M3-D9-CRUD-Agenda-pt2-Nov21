@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <title>CRUD Agenda</title>
+    <style>
+        /* form.validated input:invalid,
+        form.validated textarea:invalid {
+            border-color: red
+        }
+
+        form.validated input:valid,
+        form.validated textarea:valid {
+            border-color: green
+        } */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" href="./">Strive CRUD Agenda</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./backoffice.html">Backoffice</a>
+                    </li>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <h2 class="d-inline-block mb-3">Backoffice</h2>
+                <h5 id="subtitle" class="d-inline-block"></h5>
+                <span id="alert-container"></span>
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Event Name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="nameEvent"
+                            placeholder="Insert a name for the Event" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Event Description</label>
+                        <textarea type="text" class="form-control" id="description" aria-describedby="descriptionEvent"
+                            placeholder="Insert a description" rows="6" required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Event Price</label>
+                        <input type="number" class="form-control" id="price" aria-describedby="priceEvent"
+                            placeholder="Insert a price" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Event Date and Time</label>
+                        <input type="datetime-local" class="form-control" id="time" aria-describedby="timeEvent"
+                            required>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    </div>
+                    <div class="d-flex" style="gap: 0.25rem">
+                        <button type="reset" class="btn btn-light">Reset </button>
+                        <button type="submit" class="btn" onclick="validate(event)"></button>
+                        <button type="button" class="btn btn-danger ml-auto d-none" onclick="handleDelete()"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M6.5 1a.5.5 0 0 0-.5.5v1h4v-1a.5.5 0 0 0-.5-.5h-3ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1H3.042l.846 10.58a1 1 0 0 0 .997.92h6.23a1 1 0 0 0 .997-.92l.846-10.58Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                            </svg></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+
+        const eventId = new URLSearchParams(window.location.search).get("eventId")
+
+        const endpoint = eventId ? "https://striveschool-api.herokuapp.com/api/agenda/" + eventId : "https://striveschool-api.herokuapp.com/api/agenda/"
+
+        const method = eventId ? "PUT" : "POST"
+
+        window.onload = async () => {
+
+            const submitBtn = document.querySelector("button[type='submit']")
+
+            if (eventId) { // EDIT MODE
+                document.getElementById("subtitle").innerText = " — Edit Event "
+                try {
+                    const response = await fetch(endpoint)
+                    const eventDetails = await response.json()
+
+                    const { name, price, time, description } = eventDetails
+
+                    // DOM MANIPULAITON - PREFILLING DATA INTO EVERY FIELD
+                    document.getElementById("name").value = name
+                    document.getElementById("description").value = description
+                    document.getElementById("price").value = price
+                    document.getElementById("time").value = time.split(".")[0]
+
+                    submitBtn.innerText = "Edit Event"
+                    submitBtn.classList.add("btn-success")
+
+                    // MAKE DELETE BTN APPEAR SINCE WE ARE IN EDIT/DELETE MODE
+                    document.querySelector(".btn-danger").classList.remove("d-none")
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            } else { // CREATION MODE
+                document.getElementById("subtitle").innerText = " — Create an Event "
+                submitBtn.innerText = "Submit Event"
+                submitBtn.classList.add("btn-primary")
+            }
+        }
+
+        const validate = (event) => {
+            // VISUAL FORM VALIDATION (red or green borders on the input fields)
+
+            // event.target.form.classList.add("validated") // vanilla method + custom css at the top of this file
+
+            // the bootstrap method (there are some predefined css rules in the bootstrap css that makes this work)
+            const form = event.target.form
+
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }
+
+        const handleSubmit = async (event) => {
+            event.preventDefault()
+
+            const myEvent = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                price: document.getElementById("price").value,
+                time: document.getElementById("time").value,
+            }
+
+            console.log(myEvent)
+
+            isLoading(true)
+
+            try {
+                const response = await fetch(endpoint, {
+                    // method: method,
+                    method,
+                    body: JSON.stringify(myEvent),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                if (!response.ok) {
+                    if (response.status >= 400 && response.status < 500) {
+                        throw new Error("User generated error")
+                    } else if (response.status >= 500) {
+                        throw new Error("Server error")
+                    }
+                }
+
+                const bodyResp = await response.json()
+                // isLoading(false)
+
+                if (eventId) {
+                    showAlert("Event with an id of: " + bodyResp._id + " got edited successfully", "success")
+                }
+                else {
+                    showAlert("New Event created with an id of: " + bodyResp._id, "success")
+                }
+
+            } catch (error) {
+                showAlert("CATCH! " + error, "danger")
+                // isLoading(false)
+            } finally {
+                isLoading(false)
+            }
+        }
+
+        const handleDelete = async () => {
+            const hasAccepted = confirm("do you really want to delete this event?")
+
+            if (hasAccepted) {
+                try {
+                    const response = await fetch(endpoint, { method: "DELETE" })
+                    if (response.ok) {
+                        const deletedObj = await response.json()
+
+                        showAlert("Event " + deletedObj.name + " got deleted successfully", "danger")
+                        setTimeout(() => window.location.assign("/"), 2500)
+                    }
+                }
+                catch (error) {
+                    showAlert(error, "danger")
+                }
+            }
+        }
+
+        const showAlert = (msg, type = "primary") => {
+            const alertContainer = document.getElementById("alert-container")
+
+            alertContainer.innerHTML = `<div class="alert alert-${type}" role="alert">
+                                        ${msg}
+                                        </div>`
+
+            setTimeout(() => {
+                alertContainer.innerHTML = ""
+            }, 2000)
+        }
+
+        const isLoading = loading => {
+            const submitBtn = document.querySelector("button[type='submit']")
+
+            if (loading) {
+                submitBtn.innerHTML +=
+                    `<div class="spinner-border spinner-border-sm ml-2" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>`
+            } else {
+                submitBtn.querySelector(".spinner-border").remove()
+            }
+        }
+
+    </script>
+</body>
+
+</html>

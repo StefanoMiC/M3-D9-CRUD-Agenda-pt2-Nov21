@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <title>CRUD Agenda</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" href="./">Strive CRUD Agenda</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./backoffice.html">Backoffice</a>
+                    </li>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <h2 class="mb-3">Current Appointments</h2>
+                <ul id="currentEvents" class="list-group">
+                    <!-- <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // window.onload = () => {
+        //     const url = "https://striveschool-api.herokuapp.com/api/agenda/"
+
+        //     fetch(url)
+        //         .then(resp => {
+        //             if (resp.ok) {
+        //                 return resp.json()
+        //             }
+        //         })
+        //         .then(events => {
+        //             // DOM MANIPULATION
+
+        //             console.log("EVENTS", events)
+
+        //             const eventList = document.getElementById("currentEvents")
+
+        //             events.forEach(event => {
+        //                 const listItem = document.createElement("li")
+        //                 listItem.className = "list-group-item d-flex justify-content-between align-items-center"
+        //                 listItem.innerHTML = `<span>${event.name}</span> <span class="badge badge-dark">${event.price}</span>`
+
+        //                 eventList.appendChild(listItem)
+        //             })
+
+        // console.log("LAST")
+        //         })
+
+        // const getEventsAndDisplay = async (u) => {
+        //     const resp = await fetch(u)
+        //     const events = await resp.json()
+        //     console.log(events)
+
+        //     const eventList = document.getElementById("currentEvents")
+
+        //     events.forEach(event => {
+        //         const listItem = document.createElement("li")
+        //         listItem.className = "list-group-item d-flex justify-content-between align-items-center"
+        //         listItem.innerHTML = `<span>${event.name}</span> <span class="badge badge-dark">${event.price}</span>`
+
+        //         eventList.appendChild(listItem)
+        //     })
+        // }
+
+        const getData = async (url) => {
+            const resp = await fetch(url)
+
+            if (!resp.ok) throw new Error("CUSTOM ERROR")
+
+            // if !resp.ok we'll never execute these next lines
+            const body = await resp.json()
+            console.log(body)
+            return body
+
+
+            // displayEvents(events)
+        }
+
+        const displayEvents = (arr) => {
+            console.log("DISPLAY EVENTS HAPPENED")
+            const eventList = document.getElementById("currentEvents") // ul elem
+
+            if (Array.isArray(arr) && arr.length > 0) {
+                arr.forEach(event => {
+                    const listItem = document.createElement("li")
+                    listItem.className = "list-group-item d-flex justify-content-between align-items-center"
+                    listItem.innerHTML = `<span>${event.name}</span> <span><span class="badge badge-dark">${event.price}</span><a class="btn btn-link" href="./detail.html?eventId=${event._id}">VIEW DETAILS</a></span>`
+
+                    eventList.appendChild(listItem)
+                })
+            } else {
+                // alert("You need to provide an array!")
+                throw new Error("You need to provide an array!")
+            }
+        }
+        //     console.log("LAST")
+        // }
+
+
+        // ASYNC FUNCTIONS, WHICH ARE BASICALLY PROMISES, CAN BE AWAITED FOR WITH THE USUAL .then() & .catch() METHOD LIKE THIS:
+
+        // window.onload = () => {
+        //     const url = "https://striveschool-api.herokuapp.com/api/agenda/"
+
+        //     getData(url).then(body => displayEvents(body)).catch(err => console.log(err))
+
+        //     console.log("LAST")
+        // }
+
+        // THE ASYNC/AWAIT APPROACH WILL WORK IN THIS WAY:
+        window.onload = async () => {
+            const url = "https://striveschool-api.herokuapp.com/api/agenda/"
+
+            try {
+                const events = await getData(url)
+                displayEvents(events)
+
+            } catch (err) {
+
+                const eventList = document.getElementById("currentEvents")
+                eventList.innerHTML = `<div class="alert alert-danger" role="alert">
+                                        ${err.message}
+                                        </div>`
+            }
+
+            console.log("LAST")
+        }
+
+
+        // IF YOU DON'T WANT TO HAVE AN ASYNC CONTEXT (SERIAL APPROACH) IN YOUR WINDOW ONLOAD YOU CAN EXTRACT THE ASYNC FUNCTIONALITY INTO AN OUTER ASYNC FUNCTION
+        // THAT IS GOING TO TAKE CARE OF THE AWAITING OF getData() AND THE EXECUTION OF displayEvents() AT THE RIGHT TIME
+
+        // const getAndDisplay = async (url) => {
+        //     const events = await getData(url)
+        //     displayEvents(events)
+        // }
+
+        // IN THIS WAY THE CONTEXT OF THE ONLOAD IS KEPT SYNCHRONOUS AND ANY OTHER OPERATION AFTER getAndDisplay() COULD HAPPEN _CONCURRENTLY_ OR CAN START AT THE SAME TIME
+
+        // window.onload = () => {
+        //     const url = "https://striveschool-api.herokuapp.com/api/agenda/"
+
+        //     getAndDisplay(url)
+
+        //     console.log("LAST")
+        // }
+    </script>
+</body>
+
+</html>
